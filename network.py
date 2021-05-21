@@ -28,21 +28,26 @@ def ReLU(x):
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
+
 def sigmoid_prime(z):# Производная сигмоидальной функции
     return sigmoid(z)*(1-sigmoid(z))
 
+
 def ReLU(z):
     return np.maximum(0,z)
+
 
 def ReLU_prime(z):
     z = np.where(z > 0, z, 1)
     return np.where(z <= 0, z, 0)
 
+
 def sigpriozv(x):
     return np.exp(-x)/np.square(1 + np.exp(x))
 
+
 def nonef_prime(x):
-    return x;
+    return x * 1
 
 
 def x_funk(x):
@@ -87,12 +92,13 @@ class Network:
                 b = np.ones((a.shape[0], 1))
                 a = np.concatenate((a, b), axis=1)
                 a_with_b_save.append(a)
-                a_with_b_multiplied_w_save.append(a.dot(w))
-                a = func(a.dot(w))
+                a = a.dot(w)
+                a_with_b_multiplied_w_save.append(a)
+                a = func(a)
                 a_after_funk_save.append(a)
 
             y_pred = a
-            loss = np.square(y_pred - y)
+            loss = y_pred - y
             y_pred = a_after_funk_save[-1] = loss
             is_first = True
             # for i in range(1, len(self.sizes)):
