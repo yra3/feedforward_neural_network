@@ -71,9 +71,9 @@ class Network:
         for i in range(self.learning_speed):
             a_without_b_save = []
             a_with_b_save = []
-            a_with_b_multyplyed_w_save = []
-            a_after_funk = []
-            grads_w = [np.zeros(w.shape) for w in self.weights]
+            a_with_b_multiplied_w_save = []
+            a_after_funk_save = []
+            # grads_w = [np.zeros(w.shape) for w in self.weights]
 
             for w, b, func in zip(self.weights, self.biases, self.functions):
 
@@ -81,16 +81,17 @@ class Network:
                 b = np.ones((a.shape[0], 1))
                 a = np.concatenate((a, b), axis=1)
                 a_with_b_save.append(a)
-                a_with_b_multyplyed_w_save.append(a.dot(w))
+                a_with_b_multiplied_w_save.append(a.dot(w))
                 a = func(a.dot(w))
-                a_after_funk.append(a)
+                a_after_funk_save.append(a)
 
             y_pred = a
             loss = np.square(y_pred - y)
-            y_pred = loss
+            y_pred = a_after_funk_save[-1] = loss
             is_first = True
-            for w, funk_gr, save in zip(self.weights[::-1], [ReLU_prime, nonef_prime][::-1], a_save[::-1]):
-                y_pred = funk_gr(y_pred)
+            for w, funk_prime, save, a_after_funk in zip(self.weights[::-1], [ReLU_prime, nonef_prime][::-1]
+                    , a_with_b_save[::-1], a_after_funk_save[::-1]):
+                y_pred = funk_prime(a_after_funk)
                 delta_w = (save.T.dot(y_pred))
                 w -= delta_w
                 if is_first:
