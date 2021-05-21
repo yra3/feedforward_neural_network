@@ -69,18 +69,22 @@ class Network:
 
     def backward(self, a, y):
         for i in range(self.learning_speed):
-            a_save = [a]
-            z_save = []
+            a_without_b_save = []
+            a_with_b_save = []
+            a_with_b_multyplyed_w_save = []
+            a_after_funk = []
             grads_w = [np.zeros(w.shape) for w in self.weights]
 
             for w, b, func in zip(self.weights, self.biases, self.functions):
-                print(a)
-                print(w)
+
+                a_without_b_save.append(a)
                 b = np.ones((a.shape[0], 1))
                 a = np.concatenate((a, b), axis=1)
-                z_save.append(a)
+                a_with_b_save.append(a)
+                a_with_b_multyplyed_w_save.append(a.dot(w))
                 a = func(a.dot(w))
-                a_save.append(a)
+                a_after_funk.append(a)
+
             y_pred = a
             loss = np.square(y_pred - y)
             y_pred = loss
