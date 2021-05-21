@@ -84,11 +84,15 @@ class Network:
             y_pred = a
             loss = np.square(y_pred - y)
             y_pred = loss
-            for w, funk_gr, save in zip(self.weights[::-1], [sigmoid_prime, ReLU_prime][::-1], a_save[::-1]):
-                y_pred = y_pred
-                delta_w = np.dot(delta, activations[-2].transpose())
-
-                w -= (save.T.dot(y_pred))
+            is_first = True
+            for w, funk_gr, save in zip(self.weights[::-1], [ReLU_prime, nonef_prime][::-1], a_save[::-1]):
+                y_pred = funk_gr(y_pred)
+                delta_w = (save.T.dot(y_pred))
+                w -= delta_w
+                if is_first:
+                    is_first = False
+                else:
+                    y_predx = np.delete(y_pred, (y_pred.shape[1]-1), axis=0)
                 y_pred = y_pred.dot(w.T)
 
         return loss
