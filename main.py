@@ -49,10 +49,13 @@ if __name__ == '__main__':
     # for i in range(count):
     #     x[1][i] = 1
     y = findedfunk(x[0])
-
-    net = Network([1, 10, 1], [sigmoid, x_funk])
-    y_pred = net.backward(x.T, y.reshape(count, 1))
-    loss = np.square(y_pred - y).sum()
+    x = np.array([[1], [2], [3], [4], [5]])
+    net = Network([1, 5, 1], [ReLU, x_funk])
+    net.backward(x.T, y.reshape(count, 1))
+    loss = net.feedforward(x.T)
+    print(x.T)
+    print(y.reshape(count, 1))
+    print(loss)
 
 
 

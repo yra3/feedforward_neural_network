@@ -57,13 +57,15 @@ class Network:
         self.count_output = sizes[-1]
         self.functions = activation_func
         self.num_layers = len(sizes)  # число слоев
-        self.learning_speed = 10000
+        self.learning_speed = 1000
         self.loss_func = None
         self.biases = [np.random.randn(1, y) for y in sizes[1:]]
         self.weights = [np.random.randn(y+1, x) for x, y in zip(sizes[1:], sizes[:-1])]
 
     def feedforward(self, a):
         for w, b, func in zip(self.weights, self.biases, self.functions):
+            b = np.ones((a.shape[0], 1))
+            a = np.concatenate((a, b), axis=1)
             a = func(a.dot(w)+b)
         return a
 
@@ -89,18 +91,22 @@ class Network:
             loss = np.square(y_pred - y)
             y_pred = a_after_funk_save[-1] = loss
             is_first = True
-            for w, funk_prime, save, a_after_funk in zip(self.weights[::-1], [ReLU_prime, nonef_prime][::-1]
-                    , a_with_b_save[::-1], a_after_funk_save[::-1]):
-                y_pred = funk_prime(a_after_funk)
-                delta_w = (save.T.dot(y_pred))
-                w -= delta_w
+            # for i in range(1, len(self.sizes)):
+            #     f_p = funk_prime(a_with_b_multiplied_w_save[-i])
+
+            for w, funk_prime, save, a_after_funk, a_with_b_w in zip(self.weights[::-1], [ReLU_prime, nonef_prime][::-1]
+                    , a_with_b_save[::-1], a_after_funk_save[::-1], a_with_b_multiplied_w_save[::-1]):
+                f_p = funk_prime(a_with_b_w)
+                y_pred = funk_prime(y_pred)
                 if is_first:
                     is_first = False
                 else:
-                    y_predx = np.delete(y_pred, (y_pred.shape[1]-1), axis=0)
+                    y_pred = np.delete(y_pred, (y_pred.shape[1]-1), axis=1)
+                delta_w = (save.T.dot(y_pred))
+                w -= delta_w / self.learning_speed
                 y_pred = y_pred.dot(w.T)
 
-        return loss
+
 
 
 
