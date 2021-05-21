@@ -18,8 +18,7 @@ import numpy as np
 В этом вам может помочь наследование. Например, вы можете сделать базовый класс (или абстрактный класс, или интерфейс, это зависит от языка, на котором вы пишете) 
 и реализовывать все компоненты, слои и функции активации, как наследники этого базового класса.'''
 
-N = 2
-D = 2
+MODE = 'dev'
 
 
 def ReLU(x):
@@ -59,8 +58,13 @@ class Network:
         self.num_layers = len(sizes)  # число слоев
         self.learning_speed = 1000
         self.loss_func = None
-        self.biases = [np.random.randn(1, y) for y in sizes[1:]]
-        self.weights = [np.random.randn(y+1, x) for x, y in zip(sizes[1:], sizes[:-1])]
+        if MODE == 'dev':
+            self.sizes = [1, 3, 1]
+            self.biases = [np.array([[1, 1, 1]]), np.array([[1]])]
+            self.weights = [np.array([[1, 1, 1], [1, 1, 1]]), np.array([[1], [1], [1], [1]])]
+        if MODE == 'reliase':
+            self.biases = [np.random.randn(1, y) for y in sizes[1:]]
+            self.weights = [np.random.randn(y+1, x) for x, y in zip(sizes[1:], sizes[:-1])]
 
     def feedforward(self, a):
         for w, b, func in zip(self.weights, self.biases, self.functions):
