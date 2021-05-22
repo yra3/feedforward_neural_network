@@ -1,6 +1,6 @@
 class Funk:
-    def funk(self, x):
+    def func(self, x):
         pass
 
-    def prime_funk(self, x):
+    def prime_func(self, x):
         pass

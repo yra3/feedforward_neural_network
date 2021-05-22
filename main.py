@@ -78,15 +78,16 @@ def plot_draw(x, y, y_pred):
 
 
 if __name__ == '__main__':
-    from network import *
+    from ActivationFunks import *
     from TestNetwork import *
     from matplotlib import pyplot as plot
 
     np.random.seed(1)
-    net = TestNetwork([1, 100, 100, 1], [ReLU, x_funk], 1000000)
+    funcs = [ReLU(), NoneFunc()]
+    net = TestNetwork([1, 100, 1], funcs, 10000)
 
-    count = 200
-    x = np.random.rand(1, count)*10-1
+    count = 20
+    x = np.random.rand(1, count)*2-1
     # x = np.arange(0, 10, 1)
     y = findedfunk1(x)
     x = x.reshape(count, 1)
