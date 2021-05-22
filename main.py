@@ -76,32 +76,22 @@ if __name__ == '__main__':
     from network import *
     from TestNetwork import *
     from matplotlib import pyplot as plot
+
+    np.random.seed(1)
     net = TestNetwork([1, 100, 1], [ReLU, x_funk])
-    count = 6
+
+    count = 10
     x = np.random.rand(1, count)*4-1
     # x = np.arange(0, 10, 1)
     y = findedfunk(x)
     x = x.reshape(count, 1)
     y = y.reshape(count, 1)
-    loss = net.feedforward(x)
     print(x)
     print(y)
-    net.backward(x, y, 10)
+    net.backward(x, y, 1)
     y_pred = net.feedforward(x)
-    print(loss)
-    # plot.plot(np.array([[3], [4]]), np.array([[7],[8]]))
-    # plot.show()
-    # arrs = np.concatenate([x,y,y_pred], axis=1)
-    # arrs = arrs[arrs[:,0].argsort()]
-    # # x = np.sort(x, axis=0).reshape(count, )
-    # # y = np.sort(y, axis=0).reshape(count, )
-    # # loss = np.sort(loss, axis=0).reshape(count, )
-    # x = arrs[:, 0]
-    # y = arrs[:, 1]
-    # y_pred = arrs[:, 2]
-    # plot.plot(x, y)
-    # plot.plot(x, y_pred)
-    # plot.show()
+    print(y_pred)
+
     plot_draw(x, y, y_pred)
 
 
