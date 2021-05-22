@@ -37,13 +37,13 @@ def x_funk(x):
 
 
 class TestNetwork:
-    def __init__(self, sizes, activation_func):
+    def __init__(self, sizes, activation_func, learning_speed):
         self.sizes = sizes
         self.count_input = sizes[0]
         self.count_output = sizes[-1]
         self.functions = activation_func
         self.num_layers = len(sizes)  # число слоев
-        self.learning_speed = 1000
+        self.learning_speed = learning_speed
         self.loss_func = None
         self.weights = [np.random.randn(y + 1, x) for x, y in zip(sizes[1:], sizes[:-1])]
 
@@ -54,10 +54,10 @@ class TestNetwork:
             a = func(a.dot(w))
         return a
 
-    def backward(self, a, y, count_epoch):
+    def backward(self, a, y, count_epoch, count_iterations_in_epoch):
         au = a
         for epoch in range(count_epoch):
-            for i in range(self.learning_speed):
+            for i in range(count_iterations_in_epoch):
                 a_without_b_save = []
                 a_with_b_save = []
                 a_with_b_multiplied_w_save = []

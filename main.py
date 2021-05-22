@@ -1,8 +1,13 @@
 import numpy as np
 
 
-def findedfunk(x):
+def findedfunk1(x):
     y = x * x
+    return y
+
+
+def findedfunk2(x):
+    y = np.sin(x)
     return y
 
 
@@ -78,17 +83,17 @@ if __name__ == '__main__':
     from matplotlib import pyplot as plot
 
     np.random.seed(1)
-    net = TestNetwork([1, 100, 1], [ReLU, x_funk])
+    net = TestNetwork([1, 100, 1], [ReLU, x_funk], 100000)
 
-    count = 10
-    x = np.random.rand(1, count)*4-1
+    count = 20
+    x = np.random.rand(1, count)*10-1
     # x = np.arange(0, 10, 1)
-    y = findedfunk(x)
+    y = findedfunk2(x)
     x = x.reshape(count, 1)
     y = y.reshape(count, 1)
     print(x)
     print(y)
-    net.backward(x, y, 1)
+    net.backward(x, y, 30, 10000)
     y_pred = net.feedforward(x)
     print(y_pred)
 
