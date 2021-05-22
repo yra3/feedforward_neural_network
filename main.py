@@ -65,7 +65,7 @@ def generateregr(count, func, is_linear=False):
 #     print(y.reshape(count, 1))
 #     print(loss)
 
-def plot_draw(x, y, y_pred):
+def plot_draw_funks(x, y, y_pred):
 
     arrs = np.concatenate([x,y,y_pred], axis=1)
     arrs = arrs[arrs[:,0].argsort()]
@@ -77,6 +77,12 @@ def plot_draw(x, y, y_pred):
     plot.show()
 
 
+def plot_draw_loss(loss):
+    iterations = list(range(len(loss)))
+    plot.plot(iterations, loss)
+    plot.show()
+
+
 if __name__ == '__main__':
     from ActivationFunks import *
     from TestNetwork import *
@@ -84,20 +90,21 @@ if __name__ == '__main__':
 
     np.random.seed(1)
     funcs = [ReLU(), NoneFunc()]
-    net = TestNetwork([1, 100, 1], funcs, 10000)
+    net = TestNetwork([1, 20, 1], funcs, 10000)
 
     count = 20
-    x = np.random.rand(1, count)*2-1
+    x = np.random.rand(1, count)*10-5
     # x = np.arange(0, 10, 1)
     y = findedfunk1(x)
     x = x.reshape(count, 1)
     y = y.reshape(count, 1)
     print(x)
     print(y)
-    net.backward(x, y, 30, 1000)
+    loss_values = net.backward(x, y, 30, 100)
     y_pred = net.feedforward(x)
     print(y_pred)
 
-    plot_draw(x, y, y_pred)
+    plot_draw_funks(x, y, y_pred)
+    plot_draw_loss(loss_values)
 
 

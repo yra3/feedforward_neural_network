@@ -1,5 +1,5 @@
 import numpy as np
-#
+from LossFuncs import L2
 # def ReLU(x):
 #     return np.maximum(x, 0)
 
@@ -56,6 +56,7 @@ class TestNetwork:
 
     def backward(self, a, y, count_epoch, count_iterations_in_epoch):
         au = a
+        loss_values = []
         for epoch in range(count_epoch):
             for i in range(count_iterations_in_epoch):
                 a_without_b_save = []
@@ -73,7 +74,12 @@ class TestNetwork:
                     a = func.func(a)
                     a_after_funk_save.append(a)
                 y_pred = a
-                loss = (y_pred - y)
+                loss = 2 * (y_pred - y)
+
+                l2 = L2()
+                total_loss = l2.loss(y, y_pred)
+                loss_values.append(total_loss)
+
                 y_pred = loss
                 is_first = True
                 for w, func, save, a_after_funk, a_with_b_w, j in zip(self.weights[::-1], self.functions[::-1]
@@ -88,5 +94,6 @@ class TestNetwork:
                     delta_w = (save.T.dot(y_pred))
                     self.weights[j] -= delta_w / float(self.learning_speed)
                     y_pred = y_pred.dot(w.T)
+        return loss_values
 
 
