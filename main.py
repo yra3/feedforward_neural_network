@@ -66,15 +66,25 @@ class TestNetwork:
 if __name__ == '__main__':
     from network import *
     from TestNetwork import *
-
-    net = TestNetwork([1, 3, 1], [ReLU, x_funk])
-    x = np.array([[4, 1.0, 2]])
-    
-    y2 = np.array([[2], [0.5], [1]])
-    loss = net.feedforward(x.T)
-    print(loss-y2)
-    net.backward(x.T, y2, 10)
-    loss = net.feedforward(x.T)
-    print(loss-y2)
+    from matplotlib import pyplot as plot
+    net = TestNetwork([1, 100, 1], [ReLU, x_funk])
+    count = 8
+    x = np.random.rand(1, count)
+    # x = np.arange(0, 10, 1)
+    y = findedfunk(x)
+    x = x.reshape(count, 1)
+    y = y.reshape(count, 1)
+    loss = net.feedforward(x)
+    print(x)
+    print(y)
+    net.backward(x, y, 10)
+    loss = net.feedforward(x)
+    print(loss)
+    x = np.sort(x, axis=0)
+    y = np.sort(y, axis=0)
+    loss = np.sort(loss, axis=0)
+    plot.plot(x, y)
+    plot.plot(x, loss)
+    plot.show()
 
 
