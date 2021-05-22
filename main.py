@@ -2,7 +2,8 @@ import numpy as np
 
 
 def findedfunk(x):
-    return np.power(x, 2)
+    y = x * x
+    return y
 
 
 # def generateregr(count, func, is_linear=False):
@@ -59,8 +60,16 @@ def generateregr(count, func, is_linear=False):
 #     print(y.reshape(count, 1))
 #     print(loss)
 
-class TestNetwork:
-    pass
+def plot_draw(x, y, y_pred):
+
+    arrs = np.concatenate([x,y,y_pred], axis=1)
+    arrs = arrs[arrs[:,0].argsort()]
+    x = arrs[:, 0]
+    y = arrs[:, 1]
+    y_pred = arrs[:, 2]
+    plot.plot(x, y)
+    plot.plot(x, y_pred)
+    plot.show()
 
 
 if __name__ == '__main__':
@@ -68,8 +77,8 @@ if __name__ == '__main__':
     from TestNetwork import *
     from matplotlib import pyplot as plot
     net = TestNetwork([1, 100, 1], [ReLU, x_funk])
-    count = 8
-    x = np.random.rand(1, count)
+    count = 6
+    x = np.random.rand(1, count)*4-1
     # x = np.arange(0, 10, 1)
     y = findedfunk(x)
     x = x.reshape(count, 1)
@@ -78,13 +87,21 @@ if __name__ == '__main__':
     print(x)
     print(y)
     net.backward(x, y, 10)
-    loss = net.feedforward(x)
+    y_pred = net.feedforward(x)
     print(loss)
-    x = np.sort(x, axis=0)
-    y = np.sort(y, axis=0)
-    loss = np.sort(loss, axis=0)
-    plot.plot(x, y)
-    plot.plot(x, loss)
-    plot.show()
+    # plot.plot(np.array([[3], [4]]), np.array([[7],[8]]))
+    # plot.show()
+    # arrs = np.concatenate([x,y,y_pred], axis=1)
+    # arrs = arrs[arrs[:,0].argsort()]
+    # # x = np.sort(x, axis=0).reshape(count, )
+    # # y = np.sort(y, axis=0).reshape(count, )
+    # # loss = np.sort(loss, axis=0).reshape(count, )
+    # x = arrs[:, 0]
+    # y = arrs[:, 1]
+    # y_pred = arrs[:, 2]
+    # plot.plot(x, y)
+    # plot.plot(x, y_pred)
+    # plot.show()
+    plot_draw(x, y, y_pred)
 
 
