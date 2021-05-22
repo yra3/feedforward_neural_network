@@ -67,17 +67,26 @@ if __name__ == '__main__':
     from network import *
     from TestNetwork import *
 
-    net = TestNetwork([3, 1], [ReLU])
-    x = np.array([[1, 2, 3], [2, 1, 5], [4, 1, 2]])
+    net = TestNetwork([1, 1], [x_funk])
+    x = np.array([[4, 1.0, 2]])
     
-    y2 = np.array([[2], [1], [4]])
+    y2 = np.array([[2], [0.5], [1]])
     loss = net.feedforward(x.T)
-    print(loss)
+    print(loss-y2)
     net.backward(x.T, y2)
     loss = net.feedforward(x.T)
-    print(loss)
+    print(loss-y2)
     net.backward(x.T, y2)
     loss = net.feedforward(x.T)
-    print(loss)
+    print(loss-y2)
+    net.backward(x.T, y2)
+    loss = net.feedforward(x.T)
+    print(loss - y2)
+    net.backward(x.T, y2)
+    loss = net.feedforward(x.T)
+    print(loss - y2)
+    net.backward(x.T, y2)
+    loss = net.feedforward(x.T)
+    print(loss - y2)
 
 
