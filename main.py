@@ -67,7 +67,7 @@ if __name__ == '__main__':
     from network import *
     from TestNetwork import *
 
-    net = TestNetwork([1, 1], [x_funk])
+    net = TestNetwork([1, 3, 1], [ReLU, x_funk])
     x = np.array([[4, 1.0, 2]])
     
     y2 = np.array([[2], [0.5], [1]])

@@ -56,7 +56,7 @@ class TestNetwork:
 
     def backward(self, a, y, count_epoch):
         au = a
-        for i in range(count_epoch):
+        for epoch in range(count_epoch):
             for i in range(self.learning_speed):
                 a_without_b_save = []
                 a_with_b_save = []
@@ -76,17 +76,17 @@ class TestNetwork:
                 loss = (y_pred - y)
                 y_pred = loss
                 is_first = True
-                for w, funk_prime, save, a_after_funk, a_with_b_w, j in zip(self.weights[::-1], [nonef_prime][::-1]
+                for w, funk_prime, save, a_after_funk, a_with_b_w, j in zip(self.weights[::-1], [ReLU_prime, nonef_prime][::-1]
                         , a_with_b_save[::-1], a_after_funk_save[::-1], a_with_b_multiplied_w_save[::-1],
-                                                                            range(self.num_layers - 1, 0, -1)):
+                                                                            range(self.num_layers - 2, -1, -1)):
                     z = funk_prime(a_with_b_w)
-                    y_pred = y_pred * z
                     if is_first:
                         is_first = False
                     else:
                         y_pred = np.delete(y_pred, (y_pred.shape[1] - 1), axis=1)
+                    y_pred = y_pred * z
                     delta_w = (save.T.dot(y_pred))
-                    self.weights[-j] -= delta_w / float(self.learning_speed)
+                    self.weights[j] -= delta_w / float(self.learning_speed)
                     y_pred = y_pred.dot(w.T)
 
 
