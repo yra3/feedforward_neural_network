@@ -1,7 +1,7 @@
 import numpy as np
-
-def ReLU(x):
-    return np.maximum(x, 0)
+#
+# def ReLU(x):
+#     return np.maximum(x, 0)
 
 
 def sigmoid(x):
@@ -11,9 +11,9 @@ def sigmoid(x):
 def sigmoid_prime(z):# Производная сигмоидальной функции
     return sigmoid(z)*(1-sigmoid(z))
 
-
-def ReLU(z):
-    return np.maximum(0,z)
+#
+# def ReLU(z):
+#     return np.maximum(0,z)
 
 
 def ReLU_prime(z):
@@ -37,11 +37,11 @@ def x_funk(x):
 
 
 class TestNetwork:
-    def __init__(self, sizes, activation_func, learning_speed):
+    def __init__(self, sizes, activation_funcs, learning_speed):
         self.sizes = sizes
         self.count_input = sizes[0]
         self.count_output = sizes[-1]
-        self.functions = activation_func
+        self.functions = activation_funcs
         self.num_layers = len(sizes)  # число слоев
         self.learning_speed = learning_speed
         self.loss_func = None
@@ -51,7 +51,7 @@ class TestNetwork:
         for w, func in zip(self.weights, self.functions):
             b = np.ones((a.shape[0], 1))
             a = np.concatenate((a, b), axis=1)
-            a = func(a.dot(w))
+            a = func.func(a.dot(w))
         return a
 
     def backward(self, a, y, count_epoch, count_iterations_in_epoch):
@@ -70,16 +70,16 @@ class TestNetwork:
                     a_with_b_save.append(a)
                     a = a.dot(w)
                     a_with_b_multiplied_w_save.append(a)
-                    a = func(a)
+                    a = func.func(a)
                     a_after_funk_save.append(a)
                 y_pred = a
                 loss = (y_pred - y)
                 y_pred = loss
                 is_first = True
-                for w, funk_prime, save, a_after_funk, a_with_b_w, j in zip(self.weights[::-1], [ReLU_prime, nonef_prime][::-1]
+                for w, func, save, a_after_funk, a_with_b_w, j in zip(self.weights[::-1], self.functions[::-1]
                         , a_with_b_save[::-1], a_after_funk_save[::-1], a_with_b_multiplied_w_save[::-1],
                                                                             range(self.num_layers - 2, -1, -1)):
-                    z = funk_prime(a_with_b_w)
+                    z = func.prime_func(a_with_b_w)
                     if is_first:
                         is_first = False
                     else:
