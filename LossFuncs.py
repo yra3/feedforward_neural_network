@@ -4,12 +4,10 @@ import numpy as np
 
 class L2(LossFunc):
     def loss(self, y, y_pred):
-        difference = y - y_pred
-        sqr_diff = np.square(difference)
-        sum = np.sum(sqr_diff)
         return np.square(y - y_pred).sum()
+
     def grad(self, y, y_pred):
-        loss = 2 * (y_pred - y)
+        return - 2 * (y_pred - y)
 
 
 class L1(LossFunc):
@@ -47,17 +45,22 @@ class L1(LossFunc):
 #         return loss, dW
 
 
-class Svm(LossFunc): #TODO test class
+class Svm(LossFunc):
     def loss(self, y, y_pred):
         delta = 1.0
-        margins = np.maximum(0, y_pred - y_pred[y] + delta)
-        margins[y] = 0
+        count_y = len(y)
+        answers = y_pred[range(count_y), y].reshape(count_y, 1)
+        margins = np.maximum(0, y_pred - answers + delta)
+        margins[range(count_y), y] = 0
         return np.sum(margins)
     def grad(self, y, y_pred):
+        delta = 1.0
+        count_y = len(y)
+        answers = y_pred[range(count_y), y].reshape(count_y, 1)
         grad = np.ones_like(y_pred)
-        grad[y_pred - y_pred[y] +1 < 0] = 0
-        grad[y] = 0
-        grad[y] = grad.sum(axis=0)
+        grad[y_pred - answers + delta < 0] = 0
+        grad[range(count_y), y] = 0
+        grad[range(count_y), y] = -grad.sum(axis=1)
         return grad
 
     # def svm_loss_and_grad_vectorized(W, X, y, reg):

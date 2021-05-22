@@ -37,14 +37,14 @@ def x_funk(x):
 
 
 class TestNetwork:
-    def __init__(self, sizes, activation_funcs, learning_speed):
+    def __init__(self, sizes, activation_funcs, loss_func, learning_speed):
         self.sizes = sizes
         self.count_input = sizes[0]
         self.count_output = sizes[-1]
         self.functions = activation_funcs
         self.num_layers = len(sizes)  # число слоев
         self.learning_speed = learning_speed
-        self.loss_func = None
+        self.loss_func = loss_func
         self.weights = [np.random.randn(y + 1, x) for x, y in zip(sizes[1:], sizes[:-1])]
 
     def feedforward(self, a):
@@ -74,11 +74,13 @@ class TestNetwork:
                     a = func.func(a)
                     a_after_funk_save.append(a)
                 y_pred = a
-                loss = 2 * (y_pred - y)
 
-                l2 = L2()
-                total_loss = l2.loss(y, y_pred)
+
+                total_loss = self.loss_func.loss(y, y_pred)
                 loss_values.append(total_loss)
+
+                loss = self.loss_func.grad(y, y_pred)
+
 
                 y_pred = loss
                 is_first = True

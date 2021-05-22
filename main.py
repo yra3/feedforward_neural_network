@@ -78,6 +78,8 @@ def plot_draw_funks(x, y, y_pred):
 
 
 def plot_draw_loss(loss):
+    loss = np.array(loss)
+    loss = loss[loss > 10000]
     iterations = list(range(len(loss)))
     plot.plot(iterations, loss)
     plot.show()
@@ -87,10 +89,11 @@ if __name__ == '__main__':
     from ActivationFunks import *
     from TestNetwork import *
     from matplotlib import pyplot as plot
-
+    from LossFuncs import L2
     np.random.seed(1)
     funcs = [ReLU(), NoneFunc()]
-    net = TestNetwork([1, 20, 1], funcs, 10000)
+    lossf = L2()
+    net = TestNetwork([1, 20, 1], funcs, lossf, 100)
 
     count = 20
     x = np.random.rand(1, count)*10-5
