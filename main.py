@@ -83,17 +83,17 @@ if __name__ == '__main__':
     from matplotlib import pyplot as plot
 
     np.random.seed(1)
-    net = TestNetwork([1, 100, 1], [ReLU, x_funk], 100000)
+    net = TestNetwork([1, 100, 100, 1], [ReLU, x_funk], 1000000)
 
-    count = 20
+    count = 200
     x = np.random.rand(1, count)*10-1
     # x = np.arange(0, 10, 1)
-    y = findedfunk2(x)
+    y = findedfunk1(x)
     x = x.reshape(count, 1)
     y = y.reshape(count, 1)
     print(x)
     print(y)
-    net.backward(x, y, 30, 10000)
+    net.backward(x, y, 30, 1000)
     y_pred = net.feedforward(x)
     print(y_pred)
 
