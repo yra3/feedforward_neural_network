@@ -33,13 +33,13 @@ if __name__ == '__main__':
     from ActivationFunks import *
     from TestNetwork import *
     from matplotlib import pyplot as plot
-    from LossFuncs import Svm
+    from LossFuncs import Svm, SoftMax
     from PlotDraws import plot_draw_loss
 
     finded_funk = findedfunk1
     # np.random.seed(1)
     funcs = [ReLU(), NoneFunc()]
-    lossf = Svm()
+    lossf = SoftMax()
     net = TestNetwork([2, 20, 2], funcs, lossf)
     count = 100
 

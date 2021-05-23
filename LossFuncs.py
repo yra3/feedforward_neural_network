@@ -20,29 +20,23 @@ class L1(LossFunc):
         return -grad
 
 
-# class SoftMax(LossFunc):
-#     def grad(self, y, y_pred):
-#         e_x = np.exp(y_pred - np.max(y_pred, axis=0))
-#         return e_x / e_x.sum(axis=0)
-#
-#     def softmax_loss_vectorized(self, y, y_pred):
-#         reg = 0.03
-#         loss = 0.0
-#         num_classes = W.shape[1]
-#         num_train = X.shape[0]
-#         scores = X.dot(W)  # 1
-#
-#         correct_class_scores = scores[range(num_train), y].reshape((num_train, 1))
-#         sum_j = np.sum(np.exp(scores), axis=1).reshape((num_train, 1))
-#         loss = np.sum(-1 * correct_class_scores + np.log(sum_j)) / num_train + reg * np.sum(W * W)
-#
-#         correct_matrix = np.zeros(scores.shape)
-#         correct_matrix[range(num_train), y] = 1
-#
-#         dW = X.T.dot(np.exp(scores) / sum_j) - X.T.dot(correct_matrix)
-#         dW = dW / num_train + W * reg
-#
-#         return loss, dW
+class SoftMax(LossFunc):
+    def loss(self, y, y_pred):
+        loss = 0.0
+        count_y = len(y)
+        answers = y_pred[range(count_y), y].reshape(count_y, 1)
+        sum_j = np.sum(np.exp(y_pred), axis=1).reshape((count_y, 1))
+        return np.sum(-1 * answers + np.log(sum_j)) / count_y
+
+    def grad(self, y, y_pred):
+        delta = 1.0
+        count_y = len(y)
+        answers = y_pred[range(count_y), y].reshape(count_y, 1)
+        grad = np.ones_like(y_pred)
+        grad[y_pred - answers + delta < 0] = 0
+        grad[range(count_y), y] = 0
+        grad[range(count_y), y] = -grad.sum(axis=1)
+        return grad
 
 
 class Svm(LossFunc):
