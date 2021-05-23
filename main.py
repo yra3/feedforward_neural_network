@@ -93,7 +93,7 @@ if __name__ == '__main__':
     np.random.seed(1)
     funcs = [ReLU(), NoneFunc()]
     lossf = L2()
-    net = TestNetwork([1, 20, 1], funcs, lossf, 100)
+    net = TestNetwork([1, 20, 1], funcs, lossf, 10000)
 
     count = 20
     x = np.random.rand(1, count)*10-5

@@ -40,7 +40,7 @@ if __name__ == '__main__':
     # np.random.seed(1)
     funcs = [ReLU(), NoneFunc()]
     lossf = Svm()
-    net = TestNetwork([2, 20, 2], funcs, lossf, 1000)
+    net = TestNetwork([2, 20, 2], funcs, lossf, 500)
     count = 100
 
     points = np.random.rand(count, 2)*2-1
@@ -48,7 +48,7 @@ if __name__ == '__main__':
     funk_border = finded_funk(points.T[0])
     y = points.T[1]
     answers[y > funk_border] = 1
-    loss_values = net.backward(points, answers, 5, 100)
+    loss_values = net.backward(points, answers, 10, 100)
     print("loss: ", end='')
     print(loss_values[-1])
     y_pred = net.feedforward(points)

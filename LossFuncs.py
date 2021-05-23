@@ -7,7 +7,7 @@ class L2(LossFunc):
         return np.square(y - y_pred).sum()
 
     def grad(self, y, y_pred):
-        return - 2 * (y_pred - y)
+        return 2 * (y_pred - y)
 
 
 class L1(LossFunc):

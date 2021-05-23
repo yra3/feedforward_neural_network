@@ -95,9 +95,10 @@ class TestNetwork:
                         y_pred = np.delete(y_pred, (y_pred.shape[1] - 1), axis=1)
                     y_pred = y_pred * z
                     delta_w = (save.T.dot(y_pred))
-                    weights_speed[j] *= 0.7
+                    weights_speed[j] *= 0.4
                     weights_speed[j] += delta_w / float(self.learning_speed)
                     w_temp = w
+                    regularization = 2 * w * 0.000003
                     self.weights[j] -= weights_speed[j]
                     # self.weights[j] -= delta_w / float(self.learning_speed)
                     y_pred = y_pred.dot(w_temp.T)
