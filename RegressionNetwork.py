@@ -37,7 +37,7 @@ if __name__ == '__main__':
     from PlotDraws import plot_draw_loss
 
     finded_funk = findedfunk1
-    np.random.seed(1)
+    # np.random.seed(1)
     funcs = [ReLU(), NoneFunc()]
     lossf = Svm()
     net = TestNetwork([2, 20, 2], funcs, lossf, 1000)
@@ -53,6 +53,6 @@ if __name__ == '__main__':
     print(loss_values[-1])
     y_pred = net.feedforward(points)
     print(np.concatenate((y_pred, answers.reshape(count, 1)), axis=1))
-    count_right_answers = test_classifier(net, 200, finded_funk)
+    count_right_answers = test_classifier(net, 10000, finded_funk)
     print(count_right_answers)
     plot_draw_loss(loss_values)

@@ -58,6 +58,7 @@ class TestNetwork:
         au = a
         loss_values = []
         for epoch in range(count_epoch):
+            weights_speed = [np.zeros_like(w) for w in self.weights]
             for i in range(count_iterations_in_epoch):
                 a_without_b_save = []
                 a_with_b_save = []
@@ -94,8 +95,12 @@ class TestNetwork:
                         y_pred = np.delete(y_pred, (y_pred.shape[1] - 1), axis=1)
                     y_pred = y_pred * z
                     delta_w = (save.T.dot(y_pred))
-                    self.weights[j] -= delta_w / float(self.learning_speed)
-                    y_pred = y_pred.dot(w.T)
+                    weights_speed[j] *= 0.7
+                    weights_speed[j] += delta_w / float(self.learning_speed)
+                    w_temp = w
+                    self.weights[j] -= weights_speed[j]
+                    # self.weights[j] -= delta_w / float(self.learning_speed)
+                    y_pred = y_pred.dot(w_temp.T)
         return loss_values
 
 
