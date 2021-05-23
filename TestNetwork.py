@@ -37,7 +37,7 @@ def x_funk(x):
 
 
 class TestNetwork:
-    def __init__(self, sizes, activation_funcs, loss_func, learning_speed):
+    def __init__(self, sizes, activation_funcs, loss_func, learning_speed=10000000):
         self.sizes = sizes
         self.count_input = sizes[0]
         self.count_output = sizes[-1]
@@ -54,7 +54,8 @@ class TestNetwork:
             a = func.func(a.dot(w))
         return a
 
-    def backward(self, a, y, count_epoch, count_iterations_in_epoch):
+    def backward(self, a, y, count_epoch, count_iterations_in_epoch, learning_speed, friction):
+        self.learning_speed = learning_speed
         au = a
         loss_values = []
         for epoch in range(count_epoch):
@@ -95,11 +96,11 @@ class TestNetwork:
                         y_pred = np.delete(y_pred, (y_pred.shape[1] - 1), axis=1)
                     y_pred = y_pred * z
                     delta_w = (save.T.dot(y_pred))
-                    weights_speed[j] *= 0.4
+                    weights_speed[j] *= friction
                     weights_speed[j] += delta_w / float(self.learning_speed)
                     w_temp = w
-                    regularization = 2 * w * 0.000003
-                    self.weights[j] -= weights_speed[j]
+                    # regularization = 2 * w * 0.000003
+                    self.weights[j] -= weights_speed[j]  # + regularization
                     # self.weights[j] -= delta_w / float(self.learning_speed)
                     y_pred = y_pred.dot(w_temp.T)
         return loss_values

@@ -4,7 +4,7 @@ import numpy as np
 
 class L2(LossFunc):
     def loss(self, y, y_pred):
-        return np.square(y - y_pred).sum()
+        return np.square(y - y_pred).sum()/y.size
 
     def grad(self, y, y_pred):
         return 2 * (y_pred - y)
@@ -12,12 +12,12 @@ class L2(LossFunc):
 
 class L1(LossFunc):
     def loss(self, y, y_pred):
-        return np.abs(y-y_pred)
+        return np.abs(y-y_pred).sum()/y.size
 
     def grad(self, y, y_pred):
         grad = np.ones_like(y_pred)
         grad[(y-y_pred)<0] = -1 #TODO test
-        return grad
+        return -grad
 
 
 # class SoftMax(LossFunc):
@@ -52,7 +52,7 @@ class Svm(LossFunc):
         answers = y_pred[range(count_y), y].reshape(count_y, 1)
         margins = np.maximum(0, y_pred - answers + delta)
         margins[range(count_y), y] = 0
-        return np.sum(margins)
+        return np.sum(margins)/count_y
     def grad(self, y, y_pred):
         delta = 1.0
         count_y = len(y)
