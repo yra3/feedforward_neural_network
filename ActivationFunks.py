@@ -26,3 +26,12 @@ class NoneFunc(Funk):
 
     def prime_func(self, x):
         return np.ones(x.shape)
+
+
+class SoftMax(Funk):
+    def func(self, x):
+        e_x = np.exp(x - np.max(x, axis=0))
+        return e_x / e_x.sum(axis=0)
+
+    def prime_func(self, x):
+        pass  # TODO write prime func

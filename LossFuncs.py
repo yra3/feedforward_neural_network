@@ -47,6 +47,7 @@ class Svm(LossFunc):
         margins = np.maximum(0, y_pred - answers + delta)
         margins[range(count_y), y] = 0
         return np.sum(margins)/count_y
+
     def grad(self, y, y_pred):
         delta = 1.0
         count_y = len(y)
@@ -57,22 +58,4 @@ class Svm(LossFunc):
         grad[range(count_y), y] = -grad.sum(axis=1)
         return grad
 
-    # def svm_loss_and_grad_vectorized(W, X, y, reg):
-    #     loss = 0.0
-    #     delta = 1.0
-    #     dW = np.zeros(W.shape)
-    #     num_train = X.shape[0]
-    #     scores = X.dot(W)
-    #
-    #     correct_class_scores = scores[range(num_train), y].reshape((num_train, 1))
-    #     margins = np.maximum(0.0, scores - correct_class_scores + delta)
-    #     margins[range(num_train), y] = 0.0
-    #     loss = (np.sum(margins) / num_train) + reg * np.sum(W * W)
-    #     margins[margins > 0] = 1.0
-    #     margins[margins < 0] = 0.0
-    #     margins[range(num_train), y] = -1.0 * np.sum(margins, axis=1)
-    #
-    #     dW = (X.T.dot(margins) / num_train) + W * reg
-    #
-    #     return loss, dW
 
