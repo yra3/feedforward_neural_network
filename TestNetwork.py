@@ -1,39 +1,4 @@
 import numpy as np
-from LossFuncs import L2
-# def ReLU(x):
-#     return np.maximum(x, 0)
-
-
-def sigmoid(x):
-    return 1 / (1 + np.exp(-x))
-
-
-def sigmoid_prime(z):# Производная сигмоидальной функции
-    return sigmoid(z)*(1-sigmoid(z))
-
-#
-# def ReLU(z):
-#     return np.maximum(0,z)
-
-
-def ReLU_prime(z):
-    # z[np.where(z < 0)] = 0
-
-    z = np.where(z <= 0, z, 1)
-    z = np.where(z >= 0, z, 0)
-    return z
-
-
-def sigpriozv(x):
-    return np.exp(-x)/np.square(1 + np.exp(x))
-
-
-def nonef_prime(x):
-    return np.ones(x.shape)
-
-
-def x_funk(x):
-    return x
 
 
 class TestNetwork:
@@ -59,6 +24,7 @@ class TestNetwork:
         au = a
         loss_values = []
         for epoch in range(count_epoch):
+            # biny_batch = np.random.au
             weights_speed = [np.zeros_like(w) for w in self.weights]
             for i in range(count_iterations_in_epoch):
                 a_without_b_save = []
@@ -77,12 +43,10 @@ class TestNetwork:
                     a_after_funk_save.append(a)
                 y_pred = a
 
-
                 total_loss = self.loss_func.loss(y, y_pred)
                 loss_values.append(total_loss)
 
                 loss = self.loss_func.grad(y, y_pred)
-
 
                 y_pred = loss
                 is_first = True
@@ -104,5 +68,4 @@ class TestNetwork:
                     # self.weights[j] -= delta_w / float(self.learning_speed)
                     y_pred = y_pred.dot(w_temp.T)
         return loss_values
-
 

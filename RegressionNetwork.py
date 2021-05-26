@@ -7,6 +7,14 @@ def findedfunk2(x):
     y = np.sin(x)
     return y
 
+def findedfunk3(x):
+    return np.sqrt(np.abs(x))-1
+    Y = 2.0*x*x*x -x*x +x-2
+
+
+def findedfunk4(x):
+    return np.sqrt(x)
+
 
 def test_classifier(net, count, finded_funk):
     points = np.random.rand(count, 2) * 2 - 1
